@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
-[Serializable]
-public class ItemTrash : MonoBehaviour
+class ItemCollection : MonoBehaviour
 {
-    public GameObject item;
+    [SerializeField] public List<GameObject> items;
 }
 

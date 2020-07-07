@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
             if (moveDir.y > 0)
             {
                 currentDirection = moveDirection.Up;
-                grabArea.transform.position = rb.position + Vector2.up;
+                grabArea.transform.position = rb.position + Vector2.up / 2;
             }
             else if (moveDir.y < 0)
             {

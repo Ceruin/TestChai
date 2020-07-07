@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GrabController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class GrabController : MonoBehaviour
     private PlayerInventory inventory;
 
     private bool isInPickupRange;
+    private GameObject gameObject;
 
     private void Start()
     {
@@ -23,19 +25,43 @@ public class GrabController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         isInPickupRange = true;
+        gameObject = collision.gameObject;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         isInPickupRange = false;
+        gameObject = null;
     }
 
     private void Update()
     {
         if (isInPickupRange)
         {
-            print("Eyyo");
-            inventory.UpdateTrashList(new ItemTrash(2, "2", 2));
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ItemContainerController container = gameObject.GetComponent<ItemContainerController>();
+
+                switch (gameObject.tag)
+                {
+                    case "WasteBin":
+                        ItemTrash inventoryTrash = inventory.GetTrashItem();
+                        if (inventoryTrash.item != null)
+                        {
+                            container.AddItem(inventoryTrash);
+                            inventory.RemoveTrashItem(inventoryTrash);
+                        }
+                        break;
+                    case "TrashCan":
+                        ItemTrash containerTrash = container.GetTrashItem();
+                        if (containerTrash.item != null)
+                        {
+                            inventory.AddTrashItem(containerTrash);
+                            container.RemoveItem(containerTrash);
+                        }
+                        break;
+                }
+            }          
         }
     }
 }
